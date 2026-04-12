@@ -48,9 +48,10 @@
             <far>100</far>
           </clip>
         </camera>
-        <always_on>1</always_on>
+        <always_on>0</always_on>
         <update_rate>30</update_rate>
-        <visualize>true</visualize>
+        <visualize>false</visualize>
+        <topic>/camera/color/image_raw</topic>
       </sensor>
       <sensor name="StereoOV7251" type="depth_camera">
         <gz_frame_id>camera_link</gz_frame_id>
@@ -67,10 +68,10 @@
             <far>19.1</far>
           </clip>
         </camera>
-        <always_on>1</always_on>
+        <always_on>0</always_on>
         <update_rate>30</update_rate>
-        <visualize>true</visualize>
-        <topic>depth_camera</topic>
+        <visualize>false</visualize>
+        <topic>/camera/depth/image_raw</topic>
       </sensor>
       <gravity>true</gravity>
       <velocity_decay />

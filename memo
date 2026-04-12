@@ -1,16 +1,68 @@
 PROJECT RUN LIST
 
+(Slam toolbox + Navigation toolbox)
 px4
+lidar
 mavros
 qgc
-scan
-link
 slam
 navigation
 exploration
+offboard
+
+(Camera + Ego planner)
+px4_camera
+camera
+mavros
+qgc
+planner
+target
+exploration
+offboard
+
+(Lidar + Octomap + Ego planner)
+px4
+lidar
+mavros
+qgc
+octomap
+planner
+target
+exploration
+offboard
 
 
 PROBLEMS AND SOLUTION:
+
+depth camera (pointcloud and camera info) in gazebo
+ongoing:
+ros2 run image_proc image_proc   --ros-args   -r image:=/camera/depth/image_raw
+outputs:
+[WARN] [1774940680.228424882] [RectifyNode]: [image_transport] Topics '/camera/depth/image_raw' and '/camera_info' do not appear to be synchronized. In the last 10s:
+	Image messages received:      71
+	CameraInfo messages received: 0
+	Synchronized pairs:           0
+
+ros noetic in ubuntu 22.04
+The following packages have unmet dependencies: libgazebo-dev : Depends: libgazebo11 (= 11.10.2+dfsg-1) but 11.14.0-1~beta1 is to be installed Depends: gazebo-common (= 11.10.2+dfsg-1) Depends: gazebo-plugin-base (= 11.10.2+dfsg-1) E: Unable to correct problems, you have held broken packages. ERROR: the following rosdeps failed to install apt: command [sudo -H apt-get install -y libgazebo-dev] failed
+solution:
+mkdir -p ~/ros_noetic/src
+cd ~/ros_noetic
+rosinstall_generator ros_comm \
+  --rosdistro noetic \
+  --deps \
+  --tar > noetic-ros_comm.rosinstall
+vcs import src < noetic-ros_comm.rosinstall
+rosdep install \
+  --from-paths src \
+  --ignore-packages-from-source \
+  --rosdistro noetic \
+  -y
+pip3 install empy==3.3.4
+./src/catkin/bin/catkin_make_isolated \
+  --install \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DPYTHON_EXECUTABLE=/usr/bin/python3
 
 turtlebot4 gz dependancy error
 solution: 
@@ -36,7 +88,36 @@ and odom->base_link->link
 
 then outputs:
 [async_slam_toolbox_node-1] [INFO] [1766116111.486694936] [slam_toolbox]: Message Filter dropping message: frame 'link' at time 4206.148 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+ongoing: ros2 run tf2_ros tf2_monitor (shows delay)
+solution:
+ros2 param set /mavros/mavros_node use_sim_time true
+ros2 param set /ros_gz_bridge use_sim_time true
+(mavros)
+<launch>
+	<arg name="fcu_url" default="/dev/ttyACM0:57600" />
+	<arg name="gcs_url" default="" />
+	<arg name="tgt_system" default="1" />
+	<arg name="tgt_component" default="1" />
+	<arg name="log_output" default="screen" />
+	<arg name="fcu_protocol" default="v2.0" />
+	<arg name="respawn_mavros" default="false" />
+	<arg name="namespace" default="mavros"/>
+	<arg name="use_sim_time" default="true" />
 
+	<include file="$(find-pkg-share mavros)/launch/node.launch">
+		<arg name="pluginlists_yaml" value="$(find-pkg-share mavros)/launch/px4_pluginlists.yaml" />
+		<arg name="config_yaml" value="$(find-pkg-share mavros)/launch/px4_config.yaml" />
+		<arg name="fcu_url" value="$(var fcu_url)" />
+		<arg name="gcs_url" value="$(var gcs_url)" />
+		<arg name="tgt_system" value="$(var tgt_system)" />
+		<arg name="tgt_component" value="$(var tgt_component)" />
+		<arg name="log_output" value="$(var log_output)" />
+		<arg name="fcu_protocol" value="$(var fcu_protocol)" />
+		<arg name="respawn_mavros" value="$(var respawn_mavros)" />
+		<arg name="namespace" value="$(var namespace)"/>
+		<arg name="use_sim_time" value="$(var use_sim_time)" />
+	</include>
+</launch>
 
 ros2 run ros_gz_bridge parameter_bridge "/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan"
 outputs:
@@ -66,6 +147,9 @@ solution: open QGC
 make px4_sitl gz_x500 PX4_GZ_WORLD=husarion_office_empty opens Gazebo without px4 drone, pending.
 solution: <world name='husarion_office_empty'> in husarion_office_empty.sdf
 
+px4 build error
+solution:
+bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
 
 
 0. ROS2
@@ -73,7 +157,10 @@ https://www.theconstruct.ai/ubuntu-20-04-ros2-foxy-install-tutorial/
 https://ban2aru.tistory.com/100
 
 - MAVROS
+(ros1)
 https://docs.px4.io/v1.15/ko/ros/mavros_installation.html#ros-noetic-(ubuntu-22.04)
+(ros2)
+https://github.com/mavlink/mavros/blob/ros2/mavros/README.md#instalation
 
 1. WIFI MODULE
 sudo apt install git
@@ -141,10 +228,22 @@ git remote remove origin
 git remote add origin https://github.com/kangmin7/turtlebot3.git
 git push -u origin main
 
-(For forked projects)
+(For other's projects)
 git remote -v
-git remote set-url origin https://github.com/kangmin7/PX4-Autopilot.git
-git push origin main
+git remote set-url origin git@github.com:kangmin7/PX4-Autopilot.git (changed from https://github.com/kangmin7/PX4-Autopilot.git)
+git push origin main (git push -f origin main to force)
+(if it doesn't work due to master) git branch -M main
+
+(change upstream to main)
+git branch --unset-upstream
+git fetch origin
+git branch -u origin/main
+
+(git checkout then set that to main)
+
+git switch main
+git reset --hard fadbb46
+git push origin main --force
 
 
 6. Autocompletion problem
@@ -232,8 +331,14 @@ ros2 pkg create px4_control --build-type ament_cmake
 ros2 pkg create px4_control --build-type ament_cmake --dependencies rclcpp px4_msgs
 
 
-19. Build specific package
-colcon build --packages-select px4_control
+19. colcon build
+rosdep install --from-paths src --ignore-src -r -y
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
+(when shuts off)
+colcon build --executor sequential --symlink-install -DCMAKE_BUILD_TYPE=Release
+(specific package)
+colcon build --packages-select px4_control --symlink-install -DCMAKE_BUILD_TYPE=Release
 
 
 20. takeoff
@@ -259,11 +364,6 @@ gz topic -e --topic /scan
 
 add to ros2 topic:
 ros2 run ros_gz_bridge parameter_bridge "/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan"
-
-
-23. ros2 build using symlink
-rosdep install --from-paths src --ignore-src -r -y
-colcon build --symlink-install --cmake-clean-cache
 
 
 24. map -> base_link tf
@@ -301,3 +401,36 @@ cat ~/.ssh/id_ed25519.pub
 GitHub → Settings → SSH and GPG keys → New SSH key
 git remote remove origin
 git remote add origin git@github.com:kangmin7/PX4-Autopilot-ROS2.git
+
+
+27. install conda
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3-$(uname)-$(uname -m).sh
+
+mamba create -n fast_nav ros-noetic-desktop python=3.9 -c robostack-staging -c conda-forge --strict-channel-priority
+mamba activate fast_nav
+conda config --env --add channels conda-forge
+conda config --env --add channels robostack-staging
+conda config --env --set channel_priority strict
+mamba install catkin_tools ninja compilers cmake pkg-config ros-noetic-mavros
+
+
+28. Docker
+docker run -it \
+  --net=host \
+  --privileged \
+  -e DISPLAY=$DISPLAY \
+  -e QT_X11_NO_MITSHM=1 \
+  -e LIBGL_ALWAYS_INDIRECT=0 \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  osrf/ros:melodic-desktop-full \
+  bash
+
+docker ps
+docker start -ai vigilant_keller
+docker exec -it vigilant_keller bash
+docker stop vigilant_keller
+
+
+29. Get pose from slam toolbox
+ros2 run tf2_ros tf2_echo map base_link
