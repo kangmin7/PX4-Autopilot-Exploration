@@ -53,7 +53,7 @@
     </light>
     <gui fullscreen='0'>
       <camera name='gui_camera'>
-        <pose>25.2459 0.588279 23.8295 0 0.925797 -2.86917</pose>
+        <pose>50.4918 1.176558 47.659 0 0.925797 -2.86917</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -65,6 +65,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_1.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -86,6 +87,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_1.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -112,6 +114,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_2.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -133,6 +136,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_2.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -159,6 +163,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_3.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -180,6 +185,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_3.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -206,6 +212,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_4.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -227,6 +234,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_4.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -253,6 +261,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_5.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -274,6 +283,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_5.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -300,6 +310,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_6.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -321,6 +332,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_6.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -347,6 +359,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_7.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -368,6 +381,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_7.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -394,6 +408,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_8.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -415,6 +430,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_8.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -441,6 +457,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_9.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -462,6 +479,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_9.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -488,6 +506,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_10.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -509,6 +528,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_10.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -535,6 +555,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_11.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -556,6 +577,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_11.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -582,6 +604,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_12.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -603,6 +626,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_12.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -629,6 +653,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_13.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -650,6 +675,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_13.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -676,6 +702,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_14.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <material>
@@ -697,6 +724,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_14.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -723,6 +751,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/wall_1.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <transparency>0</transparency>
@@ -745,6 +774,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/wall_1.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -762,7 +792,7 @@
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
-        <pose>0.219432 -13.1144 0 0 -0 0</pose>
+        <pose>0.438864 -26.2288 0 0 -0 0</pose>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -772,6 +802,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/wall_2.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <transparency>0</transparency>
@@ -794,6 +825,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/wall_2.obj</uri>
+              <scale>2 2 2</scale>
             </mesh>
           </geometry>
           <surface>
@@ -811,21 +843,21 @@
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
-        <pose>1.17225 -12.2477 0 0 -0 0</pose>
+        <pose>2.3445 -24.4954 0 0 -0 0</pose>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose>-1 1 0 0 -0 0</pose>
+      <pose>-2 2 0 0 -0 0</pose>
     </model>
     <model name='Shelf_1'>
       <static>1</static>
-      <pose>-0.273934 -2.28745 0.2 0 0 -1.56696</pose>
+      <pose>-0.547868 -4.5749 0.4 0 0 -1.56696</pose>
       <link name='shelf_link'>
         <collision name='body_collision'>
           <geometry>
             <box>
-              <size>1.9638 0.8878 0.4</size>
+              <size>3.9276 1.7756 0.8</size>
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -851,7 +883,7 @@
           </material>
           <geometry>
             <box>
-              <size>1.9638 0.8878 0.4</size>
+              <size>3.9276 1.7756 0.8</size>
             </box>
           </geometry>
         </visual>
@@ -882,100 +914,100 @@
       <wall_time>1650056896 307077941</wall_time>
       <iterations>165529</iterations>
       <model name='Surfaces'>
-        <pose>-1 1 0 0 -0 0</pose>
+        <pose>-2 2 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='floor_1'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_10'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_11'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_12'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_13'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_14'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_2'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_3'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_4'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_5'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_6'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_7'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_8'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='floor_9'>
-          <pose>-1 1 0 0 -0 0</pose>
+          <pose>-2 2 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='wall_1'>
-          <pose>-0.780568 -12.1144 0 0 -0 0</pose>
+          <pose>-1.561136 -24.2288 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='wall_2'>
-          <pose>0.172252 -11.2477 0 0 -0 0</pose>
+          <pose>0.344504 -22.4954 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
