@@ -30,6 +30,7 @@
 
     <scene>
       <ambient>0.8 0.8 0.8 1</ambient>
+      <background>0 0 0 1</background>
       <grid>0</grid>
       <shadows>1</shadows>
     </scene>
