@@ -1,8 +1,54 @@
-PROJECT RUN LIST
+FAULT TOLERANT CONTROL
+
+make px4_sitl gz_x500
+commander takeoff
+param reset_all
+
+failure motor off -i 1
+param set MPC_THR_HOVER 0.10
+
+param set SYS_FAILURE_EN 1
+param set CA_FAILURE_MODE 1
+param set FD_FAIL_P 0
+param set FD_FAIL_R 0
+
+param show MPC_THR_HOVER
+param set MPC_THR_HOVER 0.2
+param set-default MPC_XY_VEL_I_ACC 0
+param set-default MC_YAW_WEIGHT 0
+param set-default MIS_TAKEOFF_ALT 5.0
+
+MPC_THR_HOVER
+min: 0.4
+max: 1.0
+
+motorConstant
+min: 5.57e-06
+max: 4.17e-05
+
+param set SYS_FAILURE_EN 1
+param set CA_FAILURE_MODE 1
+param set MC_YAW_WEIGHT 0
+param set MC_YAWRATE_P 0
+param set MC_YAWRATE_I 0
+param set MC_YAWRATE_D 0
+param set MC_ROLL_P 4
+param set MC_PITCH_P 4
+param set MC_ROLLRATE_P 0.1
+param set MC_PITCHRATE_P 0.1
+param set MC_ROLLRATE_I 0.05
+param set MC_PITCHRATE_I 0.05
+param set MPC_THR_HOVER 0.65
+param set FD_FAIL_P 0
+param set FD_FAIL_R 0
+
+
+EXPLORATION
 
 (Slam toolbox + Navigation toolbox)
 px4
 lidar
+sim_time
 mavros
 qgc
 slam
@@ -240,11 +286,13 @@ git fetch origin
 git branch -u origin/main
 
 (git checkout then set that to main)
-
 git switch main
 git reset --hard fadbb46
 git push origin main --force
 
+(or)
+
+git push origin HEAD:main
 
 6. Autocompletion problem
 sudo apt install ros-noetic-rosbash
@@ -434,3 +482,16 @@ docker stop vigilant_keller
 
 29. Get pose from slam toolbox
 ros2 run tf2_ros tf2_echo map base_link
+
+
+30. QGC not needed for arming + takeoff
+param set-default NAV_DLL_ACT 0
+
+
+31. Stop following quadrotor in gazebo
+● Update(ROMFS/px4fmu_common/init.d-posix/airframes/4001_gz_x500)               
+  ⎿  Added 1 line                                                               
+      10  PX4_SIMULATOR=${PX4_SIMULATOR:=gz}                                    
+      11  PX4_GZ_WORLD=${PX4_GZ_WORLD:=default}             
+      12  PX4_SIM_MODEL=${PX4_SIM_MODEL:=x500}                                  
+      13 +PX4_GZ_NO_FOLLOW=1

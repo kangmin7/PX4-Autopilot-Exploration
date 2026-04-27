@@ -33,6 +33,7 @@
       <grid>0</grid>
       <shadows>1</shadows>
     </scene>
+
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
       <pose>0 0 10 0 -0 0</pose>
@@ -45,19 +46,16 @@
         <quadratic>0.001</quadratic>
       </attenuation>
       <direction>-0.5 0.1 -0.9</direction>
-      <spot>
-        <inner_angle>0</inner_angle>
-        <outer_angle>0</outer_angle>
-        <falloff>0</falloff>
-      </spot>
     </light>
+
     <gui fullscreen='0'>
       <camera name='gui_camera'>
-        <pose>50.4918 1.176558 47.659 0 0.925797 -2.86917</pose>
+        <pose>60.59016 1.411870 47.659 0 0.925797 -2.86917</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
+
     <model name='Surfaces'>
       <static>1</static>
       <link name='floor_1'>
@@ -65,7 +63,7 @@
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_1.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -77,44 +75,28 @@
                 <albedo_map>model://Surfaces/meshes/wood1.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_1_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_1.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_2'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_2.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -126,44 +108,28 @@
                 <albedo_map>model://Surfaces/meshes/white_carpet.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_2_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_2.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_3'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_3.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -175,44 +141,28 @@
                 <albedo_map>model://Surfaces/meshes/white_carpet.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_3_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_3.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_4'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_4.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -224,44 +174,28 @@
                 <albedo_map>model://Surfaces/meshes/black_concrete.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_4_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_4.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_5'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_5.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -273,44 +207,28 @@
                 <albedo_map>model://Surfaces/meshes/white_tiles.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_5_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_5.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_6'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_6.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -322,44 +240,28 @@
                 <albedo_map>model://Surfaces/meshes/white_tiles.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_6_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_6.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_7'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_7.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -371,44 +273,28 @@
                 <albedo_map>model://Surfaces/meshes/white_tiles.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_7_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_7.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_8'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_8.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -420,44 +306,28 @@
                 <albedo_map>model://Surfaces/meshes/white_carpet.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_8_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_8.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_9'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_9.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -469,44 +339,28 @@
                 <albedo_map>model://Surfaces/meshes/wood1.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_9_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_9.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_10'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_10.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -518,44 +372,28 @@
                 <albedo_map>model://Surfaces/meshes/white_carpet.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_10_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_10.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_11'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_11.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -567,44 +405,28 @@
                 <albedo_map>model://Surfaces/meshes/wood1.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_11_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_11.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_12'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_12.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -616,44 +438,28 @@
                 <albedo_map>model://Surfaces/meshes/white_carpet.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_12_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_12.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_13'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_13.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -665,44 +471,28 @@
                 <albedo_map>model://Surfaces/meshes/white_tiles.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_13_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_13.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='floor_14'>
         <visual name='visual'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_14.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <material>
@@ -714,47 +504,30 @@
                 <albedo_map>model://Surfaces/meshes/black_concrete.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>floor_14_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/floor_14.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
       <link name='wall_1'>
         <visual name='wall_1'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/wall_1.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
-          <transparency>0</transparency>
           <material>
             <diffuse>1 1 1 1</diffuse>
             <specular>0.1 0.1 0.1 1</specular>
@@ -764,48 +537,31 @@
                 <albedo_map>model://Surfaces/meshes/white_wall.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>wall_1_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/wall_1.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <pose>0.438864 -26.2288 0 0 -0 0</pose>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
+        <pose>0.526637 -31.47456 0 0 -0 0</pose>
       </link>
       <link name='wall_2'>
         <visual name='wall_2'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/wall_2.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
-          <transparency>0</transparency>
           <material>
             <diffuse>1 1 1 1</diffuse>
             <specular>0.1 0.1 0.1 1</specular>
@@ -815,64 +571,36 @@
                 <albedo_map>model://Surfaces/meshes/wood2.png</albedo_map>
               </metal>
             </pbr>
-            <script>
-              <uri>model://Surfaces/meshes/</uri>
-              <name>wall_2_Diffuse</name>
-            </script>
           </material>
         </visual>
         <collision name='collision'>
           <geometry>
             <mesh>
               <uri>model://Surfaces/meshes/wall_2.obj</uri>
-              <scale>2 2 2</scale>
+              <scale>2.4 2.4 2.4</scale>
             </mesh>
           </geometry>
           <surface>
             <contact>
               <collide_bitmask>1</collide_bitmask>
-              <ode/>
             </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
           </surface>
-          <max_contacts>10</max_contacts>
         </collision>
-        <pose>2.3445 -24.4954 0 0 -0 0</pose>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
+        <pose>2.8134 -29.39448 0 0 -0 0</pose>
       </link>
-      <pose>-2 2 0 0 -0 0</pose>
+      <pose>-2.4 2.4 0 0 -0 0</pose>
     </model>
+
     <model name='Shelf_1'>
       <static>1</static>
-      <pose>-0.547868 -4.5749 0.4 0 0 -1.56696</pose>
+      <pose>-0.657442 -5.48988 0.48 0 0 -1.56696</pose>
       <link name='shelf_link'>
         <collision name='body_collision'>
           <geometry>
             <box>
-              <size>3.9276 1.7756 0.8</size>
+              <size>4.71312 2.13072 0.96</size>
             </box>
           </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
         </collision>
         <visual name='body_visual'>
           <material>
@@ -883,139 +611,16 @@
           </material>
           <geometry>
             <box>
-              <size>3.9276 1.7756 0.8</size>
+              <size>4.71312 2.13072 0.96</size>
             </box>
           </geometry>
         </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
       </link>
     </model>
+
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
-    <physics type='ode'>
-      <max_step_size>0.001</max_step_size>
-      <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>1000</real_time_update_rate>
-    </physics>
-    <wind/>
-    <spherical_coordinates>
-      <surface_model>EARTH_WGS84</surface_model>
-      <latitude_deg>0</latitude_deg>
-      <longitude_deg>0</longitude_deg>
-      <elevation>0</elevation>
-      <heading_deg>0</heading_deg>
-    </spherical_coordinates>
-    <state world_name='world'>
-      <sim_time>165 529000000</sim_time>
-      <real_time>172 382340040</real_time>
-      <wall_time>1650056896 307077941</wall_time>
-      <iterations>165529</iterations>
-      <model name='Surfaces'>
-        <pose>-2 2 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='floor_1'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_10'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_11'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_12'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_13'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_14'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_2'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_3'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_4'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_5'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_6'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_7'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_8'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='floor_9'>
-          <pose>-2 2 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='wall_1'>
-          <pose>-1.561136 -24.2288 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-        <link name='wall_2'>
-          <pose>0.344504 -22.4954 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <light name='sun'>
-        <pose>0 0 10 0 -0 0</pose>
-      </light>
-    </state>
+
   </world>
 </sdf>
