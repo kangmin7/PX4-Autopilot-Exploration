@@ -45,6 +45,8 @@ param set FD_FAIL_R 0
 
 EXPLORATION
 
+slam: claude --resume a29767af-05a2-4754-8431-ecba58be9b5b
+
 (Indoor Slam toolbox + Navigation toolbox)
 px4_indoor
 lidar

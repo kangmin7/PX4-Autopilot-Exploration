@@ -253,6 +253,8 @@ alias target="ros2 topic pub --once /move_base_simple/goal geometry_msgs/msg/Pos
 alias slam='ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true'
 #alias slam='ros2 launch ohm_tsd_slam slam.launch.py'
 
+alias slam_bridge='python3 ~/PX4-Autopilot/Tools/simulation/gz/tools/slam_to_px4.py --ros-args -p use_sim_time:=true'
+
 #alias navigation='ros2 launch nav2_bringup navigation_launch.py'
 alias navigation='ros2 launch nav2_bringup px4_mavros_navigation_launch.py use_sim_time:=true'
 
