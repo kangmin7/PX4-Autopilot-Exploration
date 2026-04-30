@@ -71,7 +71,6 @@
             <resolution>0.01</resolution>
           </range>
         </ray>
-        <topic>range</topic>
         <always_on>1</always_on>
         <visualize>false</visualize>
       </sensor>

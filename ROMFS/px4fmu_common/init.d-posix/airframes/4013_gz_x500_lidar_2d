@@ -8,3 +8,6 @@
 PX4_SIM_MODEL=${PX4_SIM_MODEL:=x500_lidar_2d}
 
 . ${R}etc/init.d-posix/airframes/4001_gz_x500
+
+# Set EKF2 global origin so MAVROS PositionTargetGlobal works without GPS
+# commander set_ekf_origin 47.397742 8.545593 488.0
