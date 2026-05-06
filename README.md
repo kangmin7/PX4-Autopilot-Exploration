@@ -6,7 +6,9 @@ Custom [PX4-Autopilot](https://github.com/PX4/PX4-Autopilot) for integration wit
 
 ## Changes
 
-[Husarion office world](https://github.com/husarion/husarion_gz_worlds) added to PX4 Gazebo worlds.
+- [Husarion office world](https://github.com/husarion/husarion_gz_worlds) added to PX4 Gazebo worlds.
+- Added sensor topic
+- Edited PX4 parameters
 
 ---
 
