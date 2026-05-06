@@ -1,6 +1,6 @@
-# PX4-Autopilot for m-explore-ros2
+# PX4-Autopilot for m-explore-ros2-px4
 
-Custom [PX4-Autopilot](https://github.com/PX4/PX4-Autopilot) for integration with [m-explore-ros2](https://github.com/robo-friends/m-explore-ros2), targeting ROS 2 Humble
+Custom [PX4-Autopilot](https://github.com/PX4/PX4-Autopilot) for integration with [m-explore-ros2-px4](https://github.com/kangmin7/m-explore-ros2-px4), targeting ROS 2 Humble
 
 ---
 
