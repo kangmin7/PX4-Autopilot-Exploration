@@ -6,13 +6,11 @@ Custom [PX4-Autopilot](https://github.com/PX4/PX4-Autopilot) for integration wit
 
 ## Changes
 
-### `Husarion Office Worlds`
-
 [Husarion office world](https://github.com/husarion/husarion_gz_worlds) added to PX4 Gazebo worlds.
 
 ---
 
-## Running in simulation (PX4 + Gazebo)
+## Running
 
 ```bash
 cd ~/PX4-Autopilot
