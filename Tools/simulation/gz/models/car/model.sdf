@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Drivable car with a real car mesh (Prius Hybrid body + windows, from the
+  OpenRobotics Fuel "Prius Hybrid" model). Single rigid-body link, no wheel
+  joints, moved kinematically by gz-sim-velocity-control-system:
+
+    gz topic -t /model/car/cmd_vel -m gz.msgs.Twist -p "linear: {x: 1.0}"
+
+  The mesh's own forward direction is local -y (front bumper at y=-2 in the
+  source mesh). The visual <pose> below applies a +90 deg yaw so the mesh's
+  front faces the link's local +x -- the axis VelocityControl treats as
+  forward via cmd_vel's linear.x -- so a model <pose> yaw of 0 makes the car
+  both visually face, and drive toward, +x.
+-->
+<sdf version="1.9">
+  <model name="car">
+    <static>false</static>
+    <link name="chassis">
+      <inertial>
+        <mass>1326</mass>
+        <inertia>
+          <ixx>647.5</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>2107.1</iyy>
+          <iyz>0</iyz>
+          <izz>2256.4</izz>
+        </inertia>
+      </inertial>
+      <collision name="chassis_collision">
+        <pose>0 0 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>4.1 1.9 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="body_visual">
+        <pose>0 0 0.03 0 0 1.5708</pose>
+        <geometry>
+          <mesh>
+            <uri>model://car/meshes/Hybrid.obj</uri>
+            <scale>0.01 0.01 0.01</scale>
+            <submesh>
+              <name>Hybrid</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="windows_visual">
+        <pose>0 0 0.03 0 0 1.5708</pose>
+        <geometry>
+          <mesh>
+            <uri>model://car/meshes/Hybrid.obj</uri>
+            <scale>0.01 0.01 0.01</scale>
+            <submesh>
+              <name>Hybrid_Windows</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="wheel_rear_visual">
+        <pose>0 0 0.03 0 0 1.5708</pose>
+        <geometry>
+          <mesh>
+            <uri>model://car/meshes/Hybrid.obj</uri>
+            <scale>0.01 0.01 0.01</scale>
+            <submesh>
+              <name>Wheels_Rear</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="wheel_front_right_visual">
+        <pose>0 0 0.03 0 0 1.5708</pose>
+        <geometry>
+          <mesh>
+            <uri>model://car/meshes/Hybrid.obj</uri>
+            <scale>0.01 0.01 0.01</scale>
+            <submesh>
+              <name>Wheel_Front_Right</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="wheel_front_left_visual">
+        <pose>0 0 0.03 0 0 1.5708</pose>
+        <geometry>
+          <mesh>
+            <uri>model://car/meshes/Hybrid.obj</uri>
+            <scale>0.01 0.01 0.01</scale>
+            <submesh>
+              <name>Wheel_Front_Left_</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="interior_visual">
+        <pose>0 0 0.03 0 0 1.5708</pose>
+        <geometry>
+          <mesh>
+            <uri>model://car/meshes/Hybrid.obj</uri>
+            <scale>0.01 0.01 0.01</scale>
+            <submesh>
+              <name>Hybrid_Interior</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name="steering_wheel_visual">
+        <pose>0 0 0.03 0 0 1.5708</pose>
+        <geometry>
+          <mesh>
+            <uri>model://car/meshes/Hybrid.obj</uri>
+            <scale>0.01 0.01 0.01</scale>
+            <submesh>
+              <name>Steering_Wheel</name>
+              <center>false</center>
+            </submesh>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+    </plugin>
+  </model>
+</sdf>

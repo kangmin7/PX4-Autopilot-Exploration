@@ -340,6 +340,14 @@
             <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
+        <!-- GZ_VISIBILITY_ALL (0x0FFFFFFF) minus bit 2 (0x4): visible everywhere
+             except to cameras whose visibility_mask is exactly that bit (e.g.
+             mono_cam, so onboard footage doesn't show the props). Using a bit
+             within GZ_VISIBILITY_ALL -- rather than GZ_VISIBILITY_SELECTION
+             (bit 28), which actors/other visuals don't have set by default --
+             keeps everything else (including walking actors) visible to
+             mono_cam. -->
+        <visibility_flags>268435451</visibility_flags>
       </visual>
       <visual name="rotor_0_visual_motor_bell">
         <pose>0 0 -.032 0 0 0</pose>
@@ -349,6 +357,7 @@
             <uri>model://x500_base/meshes/5010Bell.dae</uri>
           </mesh>
         </geometry>
+        <visibility_flags>268435451</visibility_flags>
       </visual>
       <collision name="rotor_0_collision">
         <pose>0 0 0 0 0 0 </pose>
@@ -412,6 +421,14 @@
             <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
+        <!-- GZ_VISIBILITY_ALL (0x0FFFFFFF) minus bit 2 (0x4): visible everywhere
+             except to cameras whose visibility_mask is exactly that bit (e.g.
+             mono_cam, so onboard footage doesn't show the props). Using a bit
+             within GZ_VISIBILITY_ALL -- rather than GZ_VISIBILITY_SELECTION
+             (bit 28), which actors/other visuals don't have set by default --
+             keeps everything else (including walking actors) visible to
+             mono_cam. -->
+        <visibility_flags>268435451</visibility_flags>
       </visual>
       <visual name="rotor_1_visual_motor_top">
         <pose>0 0 -.032 0 0 0</pose>
@@ -421,6 +438,7 @@
             <uri>model://x500_base/meshes/5010Bell.dae</uri>
           </mesh>
         </geometry>
+        <visibility_flags>268435451</visibility_flags>
       </visual>
       <collision name="rotor_1_collision">
         <pose>0 0 0 0 0 0 </pose>
@@ -484,6 +502,14 @@
             <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
+        <!-- GZ_VISIBILITY_ALL (0x0FFFFFFF) minus bit 2 (0x4): visible everywhere
+             except to cameras whose visibility_mask is exactly that bit (e.g.
+             mono_cam, so onboard footage doesn't show the props). Using a bit
+             within GZ_VISIBILITY_ALL -- rather than GZ_VISIBILITY_SELECTION
+             (bit 28), which actors/other visuals don't have set by default --
+             keeps everything else (including walking actors) visible to
+             mono_cam. -->
+        <visibility_flags>268435451</visibility_flags>
       </visual>
       <visual name="rotor_2_visual_motor_top">
         <pose>0 0 -.032 0 0 0</pose>
@@ -493,6 +519,7 @@
             <uri>model://x500_base/meshes/5010Bell.dae</uri>
           </mesh>
         </geometry>
+        <visibility_flags>268435451</visibility_flags>
       </visual>
       <collision name="rotor_2_collision">
         <pose>0 0 0 0 0 0 </pose>
@@ -556,6 +583,14 @@
             <uri>file://media/materials/scripts/gazebo.material</uri>
           </script>
         </material>
+        <!-- GZ_VISIBILITY_ALL (0x0FFFFFFF) minus bit 2 (0x4): visible everywhere
+             except to cameras whose visibility_mask is exactly that bit (e.g.
+             mono_cam, so onboard footage doesn't show the props). Using a bit
+             within GZ_VISIBILITY_ALL -- rather than GZ_VISIBILITY_SELECTION
+             (bit 28), which actors/other visuals don't have set by default --
+             keeps everything else (including walking actors) visible to
+             mono_cam. -->
+        <visibility_flags>268435451</visibility_flags>
       </visual>
       <visual name="rotor_3_visual_motor_top">
         <pose>0 0 -.032 0 0 0</pose>
@@ -565,6 +600,7 @@
             <uri>model://x500_base/meshes/5010Bell.dae</uri>
           </mesh>
         </geometry>
+        <visibility_flags>268435451</visibility_flags>
       </visual>
       <collision name="rotor_3_collision">
         <pose>0 0 0 0 0 0 </pose>

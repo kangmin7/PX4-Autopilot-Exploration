@@ -1,0 +1,981 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A city-street scene for the drone (spawned at the origin, Gazebo +x = front,
+  facing down the street). The human (x=2) and crosswalk/traffic light
+  (x=3..6) sit close to the drone; the car sits much further away (x=10) --
+  all inside the drone's forward camera FOV from its spawn point.
+
+    - "street" model: a 300x7 m asphalt strip along x (from x=-10 to x=290,
+      centered on y=0, long enough for the car to drive a long way down it)
+      with dashed center-line stripes near the start (gap left at x=3..5
+      for the crosswalk), a 9-stripe pedestrian crosswalk (zebra pattern:
+      stripes run parallel to the direction of travel, x=3..5, and are
+      spread across the road width, y=-3.2..3.2), and a 2 m-wide, 300 m-long
+      sidewalk on each side (y=+4.5 and y=-4.5).
+    - "walking_person" actor: same pose/trajectory as walking_human.sdf,
+      shifted to (pose 2 -1.8 0.61, oscillating y between -1.8 and 5 at
+      x=2) -- walks back and forth across the road just ahead of the
+      crosswalk, directly ahead of the drone and much closer to it than the
+      car. z=0.61 (vs. walking_human.sdf's 0.86) keeps the feet on the
+      ground here -- walk.dae's mesh origin sits lower relative to the feet
+      than a naive read of its bounding box suggests.
+    - "car": a real car mesh (model://car, Prius body/windows, wheels and
+      interior/steering wheel all included) at (10, -1.75, 0), facing +x --
+      much further away than the human. Drive it forward (+x) the same way
+      as before:
+        gz topic -t /model/car/cmd_vel -m gz.msgs.Twist -p "linear: {x: 1.0}"
+    - "traffic_light": pole + signal head at x=6, y=-3.6 (right sidewalk
+      edge, just past the crosswalk), red lens lit.
+
+  Usage:
+    PX4_GZ_WORLD=street make px4_sitl gz_x500_mono_cam
+-->
+<sdf version="1.9">
+  <world name="street">
+    <physics type="ode">
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>100</real_time_update_rate>
+    </physics>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type="adiabatic"/>
+    <scene>
+      <grid>false</grid>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>false</shadows>
+    </scene>
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>1 1</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>500 500</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>0 0 0 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <light name="sunUTC" type="directional">
+      <pose>0 0 500 0 -0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>1</intensity>
+      <direction>0.001 0.625 -0.78</direction>
+      <diffuse>0.904 0.904 0.904 1</diffuse>
+      <specular>0.271 0.271 0.271 1</specular>
+      <attenuation>
+        <range>2000</range>
+        <linear>0</linear>
+        <constant>1</constant>
+        <quadratic>0</quadratic>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+
+    <model name="street">
+      <static>true</static>
+      <link name="link">
+        <visual name="road_surface">
+          <pose>140 0 0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>300 7 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.15 0.15 0.15 1</ambient>
+            <diffuse>0.15 0.15 0.15 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+        <visual name="stripe_1">
+          <pose>-8 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_2">
+          <pose>-2 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <!-- pedestrian crosswalk (zebra pattern): 9 stripes parallel to
+             the direction of travel (x=3..5, the gap left in the
+             center-line stripes above), spread across the road width
+             (y=-3.2..3.2) -->
+        <visual name="crosswalk_1">
+          <pose>4 -3.2 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.4 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="crosswalk_2">
+          <pose>4 -2.4 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.4 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="crosswalk_3">
+          <pose>4 -1.6 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.4 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="crosswalk_4">
+          <pose>4 -0.8 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.4 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="crosswalk_5">
+          <pose>4 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.4 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="crosswalk_6">
+          <pose>4 0.8 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.4 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="crosswalk_7">
+          <pose>4 1.6 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.4 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="crosswalk_8">
+          <pose>4 2.4 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.4 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="crosswalk_9">
+          <pose>4 3.2 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.4 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_4">
+          <pose>10 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_5">
+          <pose>16 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_6">
+          <pose>22 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_7">
+          <pose>28 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_8">
+          <pose>34 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_9">
+          <pose>40 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_10">
+          <pose>46 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_11">
+          <pose>52 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_12">
+          <pose>58 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_13">
+          <pose>64 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_14">
+          <pose>70 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_15">
+          <pose>76 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_16">
+          <pose>82 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_17">
+          <pose>88 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_18">
+          <pose>94 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_19">
+          <pose>100 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_20">
+          <pose>106 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_21">
+          <pose>112 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_22">
+          <pose>118 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_23">
+          <pose>124 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_24">
+          <pose>130 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_25">
+          <pose>136 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_26">
+          <pose>142 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_27">
+          <pose>148 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_28">
+          <pose>154 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_29">
+          <pose>160 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_30">
+          <pose>166 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_31">
+          <pose>172 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_32">
+          <pose>178 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_33">
+          <pose>184 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_34">
+          <pose>190 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_35">
+          <pose>196 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_36">
+          <pose>202 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_37">
+          <pose>208 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_38">
+          <pose>214 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_39">
+          <pose>220 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_40">
+          <pose>226 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_41">
+          <pose>232 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_42">
+          <pose>238 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_43">
+          <pose>244 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_44">
+          <pose>250 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_45">
+          <pose>256 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_46">
+          <pose>262 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_47">
+          <pose>268 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_48">
+          <pose>274 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_49">
+          <pose>280 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_50">
+          <pose>286 0 0.025 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2 0.15 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="sidewalk_left">
+          <pose>140 4.5 0.075 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>300 2 0.15</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+        <visual name="sidewalk_right">
+          <pose>140 -4.5 0.075 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>300 2 0.15</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <actor name="walking_person">
+      <pose>2 -1.8 0.61 0 0 0</pose>
+      <skin>
+        <filename>model://walking_actor/meshes/walk.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walking_actor/meshes/walk.dae</filename>
+        <scale>1.0</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <script>
+        <loop>true</loop>
+        <delay_start>0</delay_start>
+        <auto_start>true</auto_start>
+        <trajectory id="0" type="walking">
+          <waypoint><time>0</time>  <pose>2 -1.8 0.61 0 0 1.5708</pose></waypoint>
+          <waypoint><time>6</time>  <pose>2  5 0.61 0 0 1.5708</pose></waypoint>
+          <waypoint><time>7</time>  <pose>2  5 0.61 0 0 -1.5708</pose></waypoint>
+          <waypoint><time>13</time> <pose>2 -1.8 0.61 0 0 -1.5708</pose></waypoint>
+          <waypoint><time>14</time> <pose>2 -1.8 0.61 0 0 1.5708</pose></waypoint>
+        </trajectory>
+      </script>
+    </actor>
+
+    <include>
+      <uri>model://car</uri>
+      <name>car</name>
+      <pose>10 -1.75 0 0 0 0</pose>
+    </include>
+
+    <model name="traffic_light">
+      <static>true</static>
+      <pose>6 -3.6 0 0 0 0</pose>
+      <link name="link">
+        <visual name="pole">
+          <pose>0 0 2 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.07</radius>
+              <length>4</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.3 0.3 0.3 1</diffuse>
+          </material>
+        </visual>
+        <collision name="pole_collision">
+          <pose>0 0 2 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.07</radius>
+              <length>4</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="head">
+          <pose>0 0 3.8 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.4 1.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0.1 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="red_light">
+          <pose>-0.07 0 4.15 0 1.5708 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.1</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0 0 1</ambient>
+            <diffuse>0.9 0 0 1</diffuse>
+            <emissive>0.8 0 0 1</emissive>
+          </material>
+        </visual>
+        <visual name="yellow_light">
+          <pose>-0.07 0 3.8 0 1.5708 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.1</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.3 0.25 0 1</ambient>
+            <diffuse>0.3 0.25 0 1</diffuse>
+          </material>
+        </visual>
+        <visual name="green_light">
+          <pose>-0.07 0 3.45 0 1.5708 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.1</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0 0.25 0 1</ambient>
+            <diffuse>0 0.25 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>47.397971057728974</latitude_deg>
+      <longitude_deg> 8.546163739800146</longitude_deg>
+      <elevation>0</elevation>
+    </spherical_coordinates>
+  </world>
+</sdf>

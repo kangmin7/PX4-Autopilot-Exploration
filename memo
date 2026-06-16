@@ -1,8 +1,28 @@
+LLM
+px4_human
+camera
+dds
+export ANTHROPIC_API_KEY=key
+llm
+llm_vision
+car_forward
+rviz2
+
+COAXIAL UAV
+make px4_sitl gz_coaxial_top_tilt
+make px4_sitl gz_interceptor_vtol
+make px4_sitl gz_quadtailsitter
+make px4_sitl gz_x500_mono_cam
+
 FAULT TOLERANT CONTROL
 
 make px4_sitl gz_x500
+make px4_sitl gz_typhoon_h480
 commander takeoff
 param reset_all
+
+param set-default SIM_GZ_EC_MIN1 150
+param set-default SIM_GZ_EC_MIN1 0
 
 failure motor off -i 1
 param set MPC_THR_HOVER 0.10
@@ -45,7 +65,13 @@ param set FD_FAIL_R 0
 
 EXPLORATION
 
-slam: claude --resume a29767af-05a2-4754-8431-ecba58be9b5b
+(RACER)
+px4_camera
+camera
+sim_time
+mavros
+exploration2
+offboard
 
 (Indoor Slam toolbox + Navigation toolbox)
 px4_indoor
@@ -271,13 +297,13 @@ rosrun usb_cam usb_cam_node _video_device:=/dev/video0 _pixel_format:=yuyv _io_m
 5. Git
 git init
 git add .
-git commit -m '...'
+git commit -m '...' (or git commit --amend -m '...')
 git log
 git checkout ...
 git branch
 git branch -M (new name)
 
-git remote add origin https://github.com/kangmin7/test.git
+git remote add origin git@github.com:kangmin7/PX4-Autopilot.git
 git push -u origin main # or master
 git push
 
@@ -305,6 +331,14 @@ git push origin main --force
 (or)
 
 git push origin HEAD:main
+
+(force push)
+git push --force-with-lease
+
+(create/delete branch)
+git checkout -b kangmin7/tecs-tune-interceptor-vtol
+git branch -d kangmin7/tecs-tune-interceptor-vtol
+
 
 6. Autocompletion problem
 sudo apt install ros-noetic-rosbash
@@ -476,6 +510,9 @@ mamba install catkin_tools ninja compilers cmake pkg-config ros-noetic-mavros
 
 
 28. Docker
+
+docker images
+
 docker run -it \
   --net=host \
   --privileged \
@@ -486,10 +523,20 @@ docker run -it \
   osrf/ros:melodic-desktop-full \
   bash
 
+docker run -it \
+  --network host \
+  --privileged \
+  -e DISPLAY=$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+  px4-ros2-humble
+
 docker ps
+docker ps -a
 docker start -ai vigilant_keller
 docker exec -it vigilant_keller bash
 docker stop vigilant_keller
+docker commit vigilant_keller vigilant_keller_v2
+
 
 
 29. Get pose from slam toolbox
@@ -518,3 +565,44 @@ param set-default NAV_DLL_ACT 0
 sudo chown $USER:$USER /usr/local/lib/libOpticalFlow.so /usr/local/FindOpticalFlow.cmake
 sudo cmake --build build/px4_sitl_default/OpticalFlow/src/OpticalFlow-build --target install
 
+
+34. Claude setting
+/hooks
+
+/statusline show current directory
+
+/rename
+claude --dangerously-skip-permissions --resume
+racer 
+interceptor 
+tracking
+yolo
+dds
+moma
+llm
+
+I want to use ultralytics_ros in ~/ros_ws with interceptor drone to track 
+  down and hit the target. Use yolo26n to track and target walk.dae human
+  model. The human model should walk circular around the drone. The drone 
+  takes off to certain altitude, and tries to locate the target by yaw 
+  rotating using the camera at the body. After locating the target, the drone 
+  turns to fixed-wing mode to track and hit the target. It should not be in 
+  hold mode where the drone orbits, it should go in a straight line while 
+  maneuvering to hit the target. Figure out the optimal location of the new 
+  code file, you might want to create new folders. Test in gz sitl until it 
+  works 
+  
+continue the simulation testing where the interceptor colllides with      
+    non-moving target person. The drone should stop rotating once it locates  
+    the target and try to face the right direction, and then try to hit it.   
+    Switching to FW mode right when the target is located while rotating      
+    makes it to miss the target.
+    
+continue testing and debugging until it works. Do not use general kill to avoid killing claude. 
+
+While showing GUI, test the simulation until the drone works while not        
+  hitting the wall and crash to the ground. If the drone fails, fix the issue   
+  and try until it works. Check if the drone fails (ex. checking altitude or    
+  warnings) in real time, and if it fails retry the simulation right away.      
+  Fully kill the gazebo before starting a new simulation to prevent info from   
+  previous session.

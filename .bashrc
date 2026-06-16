@@ -98,6 +98,9 @@ alias cb='cp ~/.bashrc ~/PX4-Autopilot'
 
 alias UPDATE='sudo apt update -y && sudo apt upgrade -y'
 alias ga='git add . && git commit -m'
+alias gaa='git add . && git commit --amend --no-edit'
+alias gp='git push'
+alias gpp='git push --force-with-lease origin main'
 
 alias memo='gedit ~/PX4-Autopilot/memo'
 alias todo='gedit ~/todo'
@@ -120,6 +123,7 @@ killgz() {
     #pkill -9 ign
     pkill -9 -f "gz"
     pkill -9 -f "px4"
+    pkill -9 -f "ros2"
     rm -rf ~/.ignition/gazebo
 }
 
@@ -139,15 +143,16 @@ alias checkpx4='ps -ef | grep px4'
 #roslaunch px4 mavros_posix_sitl.launch vehicle:=iris_rplidar world:=$(rospack find mavlink_sitl_gazebo)/worlds/test_zone.world'
 alias px4_basic='cd ~/PX4-Autopilot && make px4_sitl gz_x500_lidar_2d'
 alias px4_indoor='cd ~/PX4-Autopilot && make px4_sitl gz_x500_lidar_2d_down PX4_GZ_WORLD=husarion_office_empty'
+alias px4_human='cd ~/PX4-Autopilot && make px4_sitl gz_x500_mono_cam PX4_GZ_WORLD=walking_human'
+alias px4_street='cd ~/PX4-Autopilot && make px4_sitl gz_x500_mono_cam PX4_GZ_WORLD=street'
+alias px4_people='cd ~/PX4-Autopilot && make px4_sitl gz_x500_mono_cam PX4_GZ_WORLD=people'
 alias px4='cd ~/PX4-Autopilot && make px4_sitl gz_x500_lidar_2d PX4_GZ_WORLD=husarion_office_empty'
-alias px4_camera='cd ~/PX4-Autopilot && make px4_sitl gz_x500_depth PX4_GZ_WORLD=walls'
+alias px4_camera='cd ~/PX4-Autopilot && make px4_sitl gz_x500_depth PX4_GZ_WORLD=husarion_office_empty_larger'
+
+alias car_forward='gz topic -t /model/car/cmd_vel -m gz.msgs.Twist -p "linear: {x: 1.0}"'
+
 alias dds='MicroXRCEAgent udp4 -p 8888'
 
-alias ftc='cd ~/PX4-Autopilot_FTC && \
-DONT_RUN=1 make px4_sitl_default gazebo-classic && \
-source Tools/simulation/gazebo-classic/setup_gazebo.bash $(pwd) $(pwd)/build/px4_sitl_default && \
-export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd):$(pwd)/Tools/simulation/gazebo-classic/sitl_gazebo-classic && \
-roslaunch px4 mavros_posix_sitl.launch'
 alias sim_time='ros2 param set /ros_gz_bridge use_sim_time true'
 alias mavros='ros2 launch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557" use_sim_time:=true'
 alias qgc='~/QGroundControl-x86_64.AppImage'
@@ -218,12 +223,24 @@ wait
 
 camera () {
 ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock &
-ros2 run ros_gz_bridge parameter_bridge /camera/color/image_raw@sensor_msgs/msg/Image@gz.msgs.Image &
-ros2 run ros_gz_bridge parameter_bridge /camera/depth/image_raw@sensor_msgs/msg/Image@gz.msgs.Image &
-ros2 run ros_gz_bridge parameter_bridge /camera/depth/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo &
-ros2 run depth_image_proc point_cloud_xyz_node --ros-args -r image_rect:=/camera/depth/image_raw -r camera_info:=/camera/depth/camera_info -r points:=/camera/depth/points &
+ros2 run ros_gz_bridge parameter_bridge /camera/color/image_raw@sensor_msgs/msg/Image[gz.msgs.Image &
 ros2 run tf2_ros static_transform_publisher \
-  --x 0 --y 0 --z 0 \
+  --x 0.12 --y 0.03 --z 0.242 \
+  --qx 0 --qy 0 --qz 0 --qw 1 \
+  --frame-id base_link \
+  --child-frame-id camera_link &
+wait
+}
+
+camera_depth () {
+ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock &
+#ros2 run ros_gz_bridge parameter_bridge /camera/color/image_raw@sensor_msgs/msg/Image@gz.msgs.Image &
+#ros2 run ros_gz_bridge parameter_bridge /camera/depth/image_raw@sensor_msgs/msg/Image@gz.msgs.Image &
+#ros2 run ros_gz_bridge parameter_bridge /camera/depth/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo &
+#ros2 run depth_image_proc point_cloud_xyz_node --ros-args -r image_rect:=/camera/depth/image_raw -r camera_info:=/camera/depth/camera_info -r points:=/camera/depth/points &
+ros2 run ros_gz_bridge parameter_bridge /lidar360/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked &
+ros2 run tf2_ros static_transform_publisher \
+  --x 0.12 --y 0.03 --z 0.242 \
   --qx 0 --qy 0 --qz 0 --qw 1 \
   --frame-id base_link \
   --child-frame-id camera_link &
@@ -259,6 +276,10 @@ alias slam_bridge='python3 ~/PX4-Autopilot/Tools/simulation/gz/tools/slam_to_px4
 alias navigation='ros2 launch nav2_bringup px4_mavros_navigation_launch.py use_sim_time:=true'
 
 alias exploration='ros2 launch explore_lite explore.launch.py'
+alias exploration2='ros2 launch exploration_manager exploration_px4.launch.py'
+
+alias llm='ros2 launch px4_llm_control px4_llm_control.launch.py'
+alias llm_vision='ros2 launch px4_llm_control vision.launch.py'
 
 alias matlab='cd ~/MATLAB/R2025b/bin && ./matlab'
 
@@ -288,32 +309,33 @@ fi
 
 
 source /opt/ros/humble/setup.bash
-source ~/ros2_rosgpt/install/setup.bash
-source ~/ros2_px4/install/setup.bash
-source ~/ros2_mavros/install/setup.bash
-source ~/ros2_turtlebot3/install/setup.bash
-source ~/ros2_worlds/install/setup.bash
-source ~/ros2_slam/install/setup.bash
-source ~/ros2_navigation/install/setup.bash
-source ~/ros2_exploration/install/setup.bash
-source ~/ros2_ego-planner/install/setup.bash
-source ~/ros2_rtabmap/install/setup.bash
-source ~/ros2_octomap/install/setup.bash
-source ~/ros2_scan2pc/install/setup.bash
-#source ~/Omni-Drone-260/ros_ws/install/setup.bash
+source ~/ros2_ws/install/setup.bash
+#source ~/ros2_rosgpt/install/setup.bash
+#source ~/ros2_px4/install/setup.bash
+#source ~/ros2_mavros/install/setup.bash
+#source ~/ros2_turtlebot3/install/setup.bash
+#source ~/ros2_worlds/install/setup.bash
+#source ~/ros2_slam/install/setup.bash
+#source ~/ros2_navigation/install/setup.bash
+#source ~/ros2_exploration/install/setup.bash
+#source ~/ros2_rtabmap/install/setup.bash
+#source ~/ros2_octomap/install/setup.bash
+#source ~/ros2_scan2pc/install/setup.bash
+#source ~/ros2_planner/install/setup.bash
 
 #source ~/catkin_ws/devel/setup.bash
 
 export TURTLEBOT3_MODEL=burger
 export TURTLEBOT4_MODEL=standard
-export OPENAI_API_KEY=your_api_key
-export GZ_SIM_RESOURCE_PATH=~/.gz/models:~/PX4-Autopilot/Tools/simulation/gz/models
+#export OPENAI_API_KEY=your_api_key
+#export ANTHROPIC_API_KEY=your_api_key
+export GZ_SIM_RESOURCE_PATH=~/.gz/models
 export GAZEBO_MODEL_PATH=~/.gz/models
 # export GZ_SIM_RESOURCE_PATH=~/ros2_worlds/src/husarion_gz_worlds/worlds:$GZ_SIM_RESOURCE_PATH
 export PATH=$PATH:/opt/xtensa-esp-elf/bin/
-export PX4_HOME_LAT=47.397742
-export PX4_HOME_LON=8.545593
-export PX4_HOME_ALT=488.0
+#export PX4_HOME_LAT=47.397742
+#export PX4_HOME_LON=8.545593
+#export PX4_HOME_ALT=488.0
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

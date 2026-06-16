@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A short pedestrian-crossing scene for the drone (spawned at the origin,
+  Gazebo +x = front, facing down the street).
+
+  Layout:
+    - "street" model: a 30x7 m asphalt strip along x (from x=-5 to x=25),
+      with dashed center-line stripes before the crosswalk and a 9-stripe
+      pedestrian zebra crossing (x=3..5, y=-3.2..3.2).
+      Sidewalks 2 m wide on each side (y=+4.5 and y=-4.5, centered).
+    - Two walking people cross in opposite directions using the same waypoint
+      positions and times as street.sdf (x=2, y -1.8↔5, 14 s loop):
+        * "person_green" (original green sweater): starts y=-1.8, walks to
+          y=5, turns, walks back — left-to-right then right-to-left.
+        * "person_red" (red sweater): starts y=5, walks to y=-1.8, turns,
+          walks back — always going the opposite direction to person_green.
+      They walk toward each other, pass through in the middle (actors have
+      no collision), and walk away — repeating every 14 s.
+    - "pedestrian_signal": pole + 2-lens signal head at x=6, y=-3.6
+      (right sidewalk edge, just past the crosswalk). Green "walk" lens lit
+      (top), red "don't walk" lens unlit (bottom) — a pedestrian crossing
+      signal, not a vehicle traffic light.
+
+  Usage:
+    PX4_GZ_WORLD=people make px4_sitl gz_x500_mono_cam
+-->
+<sdf version="1.9">
+  <world name="people">
+    <physics type="ode">
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>100</real_time_update_rate>
+    </physics>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type="adiabatic"/>
+    <scene>
+      <grid>false</grid>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>false</shadows>
+    </scene>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>1 1</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction><ode/></friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>500 500</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>1</iyy><iyz>0</iyz><izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>0 0 0 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+
+    <light name="sunUTC" type="directional">
+      <pose>0 0 500 0 -0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>1</intensity>
+      <direction>0.001 0.625 -0.78</direction>
+      <diffuse>0.904 0.904 0.904 1</diffuse>
+      <specular>0.271 0.271 0.271 1</specular>
+      <attenuation>
+        <range>2000</range>
+        <linear>0</linear>
+        <constant>1</constant>
+        <quadratic>0</quadratic>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+
+    <!-- Short road: 30 m along x (x=-5..25), 7 m wide, with crosswalk at x=3..5 -->
+    <model name="street">
+      <static>true</static>
+      <link name="link">
+        <visual name="road_surface">
+          <pose>10 0 0.01 0 0 0</pose>
+          <geometry>
+            <box><size>30 7 0.02</size></box>
+          </geometry>
+          <material>
+            <ambient>0.15 0.15 0.15 1</ambient>
+            <diffuse>0.15 0.15 0.15 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+
+        <!-- Center-line dashes before crosswalk -->
+        <visual name="stripe_1">
+          <pose>-4 0 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.15 0.01</size></box></geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_2">
+          <pose>0 0 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.15 0.01</size></box></geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Zebra crosswalk (9 stripes, x=3..5, y=-3.2..3.2) -->
+        <visual name="crosswalk_1">
+          <pose>4 -3.2 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.4 0.01</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
+        </visual>
+        <visual name="crosswalk_2">
+          <pose>4 -2.4 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.4 0.01</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
+        </visual>
+        <visual name="crosswalk_3">
+          <pose>4 -1.6 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.4 0.01</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
+        </visual>
+        <visual name="crosswalk_4">
+          <pose>4 -0.8 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.4 0.01</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
+        </visual>
+        <visual name="crosswalk_5">
+          <pose>4 0 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.4 0.01</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
+        </visual>
+        <visual name="crosswalk_6">
+          <pose>4 0.8 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.4 0.01</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
+        </visual>
+        <visual name="crosswalk_7">
+          <pose>4 1.6 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.4 0.01</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
+        </visual>
+        <visual name="crosswalk_8">
+          <pose>4 2.4 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.4 0.01</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
+        </visual>
+        <visual name="crosswalk_9">
+          <pose>4 3.2 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.4 0.01</size></box></geometry>
+          <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.9 0.9 0.9 1</diffuse></material>
+        </visual>
+
+        <!-- Center-line dash after crosswalk -->
+        <visual name="stripe_3">
+          <pose>10 0 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.15 0.01</size></box></geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+        <visual name="stripe_4">
+          <pose>16 0 0.025 0 0 0</pose>
+          <geometry><box><size>2 0.15 0.01</size></box></geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Sidewalks (2 m wide, matching street length) -->
+        <visual name="sidewalk_left">
+          <pose>10 4.5 0.075 0 0 0</pose>
+          <geometry><box><size>30 2 0.15</size></box></geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+        <visual name="sidewalk_right">
+          <pose>10 -4.5 0.075 0 0 0</pose>
+          <geometry><box><size>30 2 0.15</size></box></geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.75 0.75 0.75 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!--
+      Person with GREEN sweater (identical to street.sdf's walking_person).
+      x=2, y from -1.8 to 5, times 0/6/7/13/14.
+    -->
+    <actor name="person_green">
+      <pose>2 -1.8 0.61 0 0 0</pose>
+      <skin>
+        <filename>model://walking_actor/meshes/walk.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walking_actor/meshes/walk.dae</filename>
+        <scale>1.0</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <script>
+        <loop>true</loop>
+        <delay_start>0</delay_start>
+        <auto_start>true</auto_start>
+        <trajectory id="0" type="walking">
+          <waypoint><time>0</time>  <pose>2 -1.8 0.61 0 0  1.5708</pose></waypoint>
+          <waypoint><time>6</time>  <pose>2  5.0 0.61 0 0  1.5708</pose></waypoint>
+          <waypoint><time>7</time>  <pose>2  5.0 0.61 0 0 -1.5708</pose></waypoint>
+          <waypoint><time>13</time> <pose>2 -1.8 0.61 0 0 -1.5708</pose></waypoint>
+          <waypoint><time>14</time> <pose>2 -1.8 0.61 0 0  1.5708</pose></waypoint>
+        </trajectory>
+      </script>
+    </actor>
+
+    <!--
+      Person with RED sweater (opposite direction, same waypoint positions/times).
+      Starts at y=5 facing -y, walks to y=-1.8, turns, walks back, repeats.
+    -->
+    <actor name="person_red">
+      <pose>2 -1.8 0.61 0 0 0</pose>
+      <skin>
+        <filename>model://walking_actor_red/meshes/walk_red.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walking_actor_red/meshes/walk_red.dae</filename>
+        <scale>1.0</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <script>
+        <loop>true</loop>
+        <delay_start>0</delay_start>
+        <auto_start>true</auto_start>
+        <trajectory id="0" type="walking">
+          <waypoint><time>0</time>  <pose>2  5.0 0.61 0 0 -1.5708</pose></waypoint>
+          <waypoint><time>6</time>  <pose>2 -1.8 0.61 0 0 -1.5708</pose></waypoint>
+          <waypoint><time>7</time>  <pose>2 -1.8 0.61 0 0  1.5708</pose></waypoint>
+          <waypoint><time>13</time> <pose>2  5.0 0.61 0 0  1.5708</pose></waypoint>
+          <waypoint><time>14</time> <pose>2  5.0 0.61 0 0 -1.5708</pose></waypoint>
+        </trajectory>
+      </script>
+    </actor>
+
+    <!--
+      Two pedestrian signals on the RIGHT (x=5.5) side of the crosswalk,
+      one per curb. Both use yaw to rotate the model so the -x face of the
+      housing points outward toward the waiting pedestrians:
+        south signal: yaw=+1.5708 → model -x aligns with world -y (south) ✓
+        north signal: yaw=-1.5708 → model -x aligns with world +y (north) ✓
+      They face AWAY from each other (outward), not toward each other.
+      Lens pose reuses the same pitch=1.5708 / x=-0.06 pattern as the
+      original street.sdf traffic light (cylinder axis along model ±x →
+      world ±y after yaw rotation; lens protrudes from the -x/-y face).
+    -->
+    <model name="pedestrian_signal_south">
+      <static>true</static>
+      <pose>5.5 -3.6 0 0 0 -1.5708</pose>
+      <link name="link">
+        <visual name="pole">
+          <pose>0 0 1.75 0 0 0</pose>
+          <geometry><cylinder><radius>0.05</radius><length>3.5</length></cylinder></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+        <collision name="pole_collision">
+          <pose>0 0 1.75 0 0 0</pose>
+          <geometry><cylinder><radius>0.05</radius><length>3.5</length></cylinder></geometry>
+        </collision>
+        <!-- Housing: model x=depth(0.1), y=width(0.3) → after yaw: 0.3m wide in world x -->
+        <visual name="head">
+          <pose>0 0 3.1 0 0 0</pose>
+          <geometry><box><size>0.1 0.3 0.5</size></box></geometry>
+          <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material>
+        </visual>
+        <!-- Lenses: pitch=1.5708 → cylinder axis along model ±x → world ±y after yaw.
+             x=-0.06 protrudes from the model -x face → world -y face (south). -->
+        <visual name="walk_light">
+          <pose>-0.06 0 3.25 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.09</radius><length>0.04</length></cylinder></geometry>
+          <material>
+            <ambient>0.0 0.85 0.0 1</ambient><diffuse>0.0 0.85 0.0 1</diffuse>
+            <emissive>0.0 0.7 0.0 1</emissive>
+          </material>
+        </visual>
+        <visual name="dont_walk_light">
+          <pose>-0.06 0 2.95 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.09</radius><length>0.04</length></cylinder></geometry>
+          <material><ambient>0.25 0.0 0.0 1</ambient><diffuse>0.25 0.0 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="pedestrian_signal_north">
+      <static>true</static>
+      <pose>5.5 3.6 0 0 0 1.5708</pose>
+      <link name="link">
+        <visual name="pole">
+          <pose>0 0 1.75 0 0 0</pose>
+          <geometry><cylinder><radius>0.05</radius><length>3.5</length></cylinder></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+        <collision name="pole_collision">
+          <pose>0 0 1.75 0 0 0</pose>
+          <geometry><cylinder><radius>0.05</radius><length>3.5</length></cylinder></geometry>
+        </collision>
+        <visual name="head">
+          <pose>0 0 3.1 0 0 0</pose>
+          <geometry><box><size>0.1 0.3 0.5</size></box></geometry>
+          <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material>
+        </visual>
+        <!-- x=-0.06 protrudes from model -x face → world +y face (north) after yaw=-1.5708 -->
+        <visual name="walk_light">
+          <pose>-0.06 0 3.25 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.09</radius><length>0.04</length></cylinder></geometry>
+          <material>
+            <ambient>0.0 0.85 0.0 1</ambient><diffuse>0.0 0.85 0.0 1</diffuse>
+            <emissive>0.0 0.7 0.0 1</emissive>
+          </material>
+        </visual>
+        <visual name="dont_walk_light">
+          <pose>-0.06 0 2.95 0 1.5708 0</pose>
+          <geometry><cylinder><radius>0.09</radius><length>0.04</length></cylinder></geometry>
+          <material><ambient>0.25 0.0 0.0 1</ambient><diffuse>0.25 0.0 0.0 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>47.397971057728974</latitude_deg>
+      <longitude_deg> 8.546163739800146</longitude_deg>
+      <elevation>0</elevation>
+    </spherical_coordinates>
+  </world>
+</sdf>
